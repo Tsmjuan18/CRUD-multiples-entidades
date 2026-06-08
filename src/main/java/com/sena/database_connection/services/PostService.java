@@ -33,8 +33,10 @@ public class PostService {
         return this.postRepository.save(post);
     }
 
-    public Post update(Post post){
-        Optional<Post> postFound = this.getIdPost(post.getId());
+
+
+    public Post update(Long id,Post post){
+        Optional<Post> postFound = postRepository.findById(id);
 
         if (postFound.isEmpty()) {
 

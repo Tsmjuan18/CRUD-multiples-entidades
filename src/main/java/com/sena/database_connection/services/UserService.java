@@ -56,10 +56,10 @@ public class UserService {
 
     // Método para actualizar un usuario existente
     // Recibe una instancia de User con el id y los nuevos datos
-    public User actualizar(User user) {
+    public User actualizar(Long id ,User user) {
 
         // Se busca el usuario por id para validar que exista
-        Optional<User> userFound = this.porId(user.getId());
+        Optional<User> userFound = repository.findById(id);
 
         // Si el usuario no existe, retorna null
         if (userFound.isEmpty()) {
@@ -75,7 +75,7 @@ public class UserService {
     public User eliminar(Long id) {
 
         // Se busca el usuario para validar que exista antes de eliminarlo
-        Optional<User> userFound = this.porId(id);
+        Optional<User> userFound = repository.findById(id);
 
         // Si el usuario no existe, retorna null
         if (userFound.isEmpty()) {

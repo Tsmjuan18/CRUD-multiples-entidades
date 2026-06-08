@@ -87,13 +87,13 @@ public class UserController {
          */
 
         User user = new User();
-
+        user.setId(id);
         user.setName(body.getName());
         user.setEmail(body.getEmail());
         user.setAge(body.getAge());
         user.setPhone(body.getPhone());
 
-        User userUptaded = this.service.actualizar(user);
+        User userUptaded = this.service.actualizar(id,user);
 
         if (userUptaded == null) {
             return ResponseEntity.status(404).body(null);

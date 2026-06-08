@@ -39,9 +39,9 @@ public class ProfileService {
 
     }
 
-    public Profile update(Profile profile){
+    public Profile update(Long id,Profile profile){
 
-        Optional<Profile> profileFound = this.getId(profile.getId());
+        Optional<Profile> profileFound = repository.findById(id);
 
         if (profileFound.isEmpty()) {
 
@@ -55,7 +55,7 @@ public class ProfileService {
 
     public Profile delete(Long id){
 
-        Optional<Profile> profileFound = this.getId(id);
+        Optional<Profile> profileFound = repository.findById(id);
 
         if (profileFound.isEmpty()) {
             
