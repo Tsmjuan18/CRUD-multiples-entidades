@@ -14,15 +14,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.sena.database_connection.dtos.ProfileDto;
 import com.sena.database_connection.entities.Profile;
+import com.sena.database_connection.entities.User;
+import com.sena.database_connection.repositories.UserRepository;
 import com.sena.database_connection.services.ProfileService;
 
 @RestController
 @RequestMapping("/profile")
 public class ProfileController {
+    private UserRepository userRepository;
     private ProfileService service;
     
-    public ProfileController(ProfileService service){ 
+    public ProfileController(ProfileService service, UserRepository userRepository){ 
         this.service= service;
+        this.userRepository=userRepository;
     }
 
    
@@ -54,8 +58,15 @@ public class ProfileController {
 
         Profile profile = new Profile();
 
-        profile.setUsername(body.getUsername());;
-        profile.setDescription(body.getDescription());;
+        profile.setUsername(body.getUsername());
+        profile.setDescription(body.getDescription());
+        Optional<User> user= userRepository.findById(body.getUserId());
+
+        if (user.isEmpty()) {
+            return null;
+            
+        }
+        profile.setUser(user.get());
        
 
         return this.service.create(profile);

@@ -14,16 +14,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.sena.database_connection.dtos.RoleDto;
 import com.sena.database_connection.entities.Role;
+import com.sena.database_connection.entities.User;
+import com.sena.database_connection.repositories.UserRepository;
 import com.sena.database_connection.services.RoleService;
 
 @RestController
 @RequestMapping("/role")
 public class RoleController {
 
+    private UserRepository userRepository;
     private RoleService service;
     
-    public RoleController(RoleService service){ 
+    public RoleController(RoleService service, UserRepository userRepository){ 
         this.service= service;
+        this.userRepository= userRepository;
     }
 
     //Metodo Get para todos los Post
@@ -54,9 +58,7 @@ public class RoleController {
     public Role Create(@RequestBody RoleDto body){
 
         Role role = new Role();
-
         role.setName(body.getName());
-
         return this.service.create(role);
     }
 

@@ -14,7 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sena.database_connection.dtos.UserDto;
+import com.sena.database_connection.entities.Post;
+import com.sena.database_connection.entities.Role;
 import com.sena.database_connection.entities.User;
+import com.sena.database_connection.repositories.RoleRepository;
 import com.sena.database_connection.services.UserService;
 
 @RestController
@@ -23,10 +26,12 @@ public class UserController {
 
     // Servicio encargado de la lógica de usuarios
     private UserService service;
+    private RoleRepository roleRepository;
 
     // Constructor con inyección de dependencias
-    public UserController(UserService service) {
+    public UserController(UserService service, RoleRepository roleRepository) {
         this.service = service;
+        this.roleRepository = roleRepository;
     }
 
     // Endpoint para obtener todos los usuarios
@@ -62,11 +67,18 @@ public class UserController {
          */
 
         User user = new User();
-
         user.setName(body.getName());
         user.setEmail(body.getEmail());
         user.setAge(body.getAge());
         user.setPhone(body.getPhone());
+
+        if (body.getRoleIds() != null) {
+
+            List<Role> roles = roleRepository.findAllById(body.getRoleIds());    
+            user.setRoles(roles);        
+        }
+
+
 
         return this.service.crear(user);
     }

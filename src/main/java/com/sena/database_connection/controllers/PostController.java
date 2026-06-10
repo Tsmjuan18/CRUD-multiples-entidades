@@ -15,7 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.sena.database_connection.dtos.PostDto;
 import com.sena.database_connection.entities.Post;
-
+import com.sena.database_connection.entities.User;
+import com.sena.database_connection.repositories.UserRepository;
 import com.sena.database_connection.services.PostService;
 
 @RestController
@@ -23,9 +24,11 @@ import com.sena.database_connection.services.PostService;
 public class PostController {
 
     private PostService service;
+    private UserRepository userRepository;
     
-    public PostController(PostService service){ 
+    public PostController(PostService service, UserRepository userRepository){ 
         this.service= service;
+        this.userRepository= userRepository;
     }
 
     //Metodo Get para todos los Post
@@ -60,7 +63,12 @@ public class PostController {
         post.setTitle(body.getTitle());
         post.setLikes(body.getLikes());
         post.setDescription(body.getDescription());
+        Optional<User>user= userRepository.findById(body.getUserId());
+        if (user.isPresent()) {
 
+            post.setUser(user.get());
+            
+        }
         return this.service.create(post);
     }
 

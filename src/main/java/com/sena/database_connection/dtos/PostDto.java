@@ -10,5 +10,7 @@ public class PostDto {
     private String description;
 
     private Integer likes;
+
+    private Long userId;
     
 }
